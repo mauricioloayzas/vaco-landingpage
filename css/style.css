@@ -595,6 +595,131 @@ body {
 .mini-icon { font-size: 1.1rem; }
 
 /* ==========================================
+   NOMBRE / ETIMOLOGÍA
+   ========================================== */
+.nombre-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.nombre-body {
+  font-size: .95rem;
+  color: var(--gray-600);
+  line-height: 1.8;
+  margin-top: 16px;
+}
+
+.nombre-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.etimologia-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--white);
+  border: 2px solid var(--amber-200, #FDE68A);
+  border-radius: var(--radius-xl);
+  padding: 48px 40px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 360px;
+}
+
+.etimologia-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--amber-400), var(--amber-600));
+}
+
+.etimologia-lang {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--amber-700);
+  background: var(--amber-100);
+  padding: 4px 14px;
+  border-radius: 99px;
+  margin-bottom: 20px;
+}
+
+.etimologia-word {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--gray-900);
+  letter-spacing: -.02em;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.etimologia-divider {
+  width: 48px;
+  height: 2px;
+  background: var(--amber-300, #FCD34D);
+  border-radius: 1px;
+  margin-bottom: 20px;
+}
+
+.etimologia-label {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 12px;
+}
+
+.etimologia-meaning {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.meaning-tag {
+  background: var(--gray-100);
+  color: var(--gray-700);
+  font-size: .95rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: var(--radius);
+}
+
+.meaning-sep {
+  color: var(--gray-400);
+  font-size: 1rem;
+}
+
+.etimologia-source {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .78rem;
+  color: var(--gray-400);
+  font-style: italic;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.etimologia-source svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--amber-500);
+}
+
+/* ==========================================
    CTA
    ========================================== */
 .cta-section {
@@ -713,6 +838,11 @@ body {
     padding: 20px 24px;
   }
   .stat-divider { width: 40px; height: 1px; }
+
+  .nombre-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
 
   .tech-inner {
     grid-template-columns: 1fr;
