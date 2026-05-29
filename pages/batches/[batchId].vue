@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Chart } from 'chart.js'
+import { Line } from 'vue-chartjs'
 
 const route = useRoute()
 const batchId = route.params.batchId as string
@@ -161,14 +161,9 @@ const sortedLogs = computed(() =>
   ),
 )
 
-// ---- chart ----
-const chartRef = ref<HTMLCanvasElement>()
-let chartInstance: Chart | null = null
-
-function renderChart(logs: typeof sortedLogs.value) {
-  if (!chartRef.value || !logs.length) return
-  chartInstance?.destroy()
-
+// ---- chart data (vue-chartjs handles lifecycle automatically) ----
+const chartData = computed(() => {
+  const logs = sortedLogs.value
   const hasBrix = logs.some((l) => l.brix != null)
   const hasTemp = logs.some((l) => l.temperature != null)
   const hasDens = logs.some((l) => l.density != null)
@@ -198,40 +193,42 @@ function renderChart(logs: typeof sortedLogs.value) {
     })
   }
 
-  chartInstance = new Chart(chartRef.value, {
-    type: 'line',
-    data: { labels: logs.map((l) => formatDateShort(l.recorded_at)), datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { position: 'top', labels: { font: { family: 'Inter', size: 12 }, usePointStyle: true } },
-        tooltip: { backgroundColor: '#111827', titleFont: { family: 'Inter', size: 12 }, bodyFont: { family: 'Inter', size: 12 }, padding: 10, cornerRadius: 8 },
-      },
-      scales: {
-        x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'Inter', size: 11 } } },
-        y: {
-          type: 'linear', display: hasBrix || (hasDens && !hasBrix), position: 'left',
-          title: { display: true, text: hasBrix ? 'Brix (°)' : 'Densidad', font: { family: 'Inter', size: 11 }, color: '#6B7280' },
-          grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { family: 'Inter', size: 11 } },
-        },
-        y1: {
-          type: 'linear', display: hasTemp, position: 'right',
-          title: { display: true, text: 'Temperatura (°C)', font: { family: 'Inter', size: 11 }, color: '#6B7280' },
-          grid: { drawOnChartArea: false }, ticks: { font: { family: 'Inter', size: 11 } },
-        },
-      },
+  return {
+    labels: logs.map((l) => formatDateShort(l.recorded_at)),
+    datasets,
+  }
+})
+
+const hasBrix = computed(() => sortedLogs.value.some((l) => l.brix != null))
+const hasTemp = computed(() => sortedLogs.value.some((l) => l.temperature != null))
+const hasDens = computed(() => sortedLogs.value.some((l) => l.density != null))
+
+const chartOptions = computed(() => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  interaction: { mode: 'index' as const, intersect: false },
+  plugins: {
+    legend: { position: 'top' as const, labels: { font: { family: 'Inter', size: 12 }, usePointStyle: true } },
+    tooltip: { backgroundColor: '#111827', titleFont: { family: 'Inter', size: 12 }, bodyFont: { family: 'Inter', size: 12 }, padding: 10, cornerRadius: 8 },
+  },
+  scales: {
+    x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'Inter', size: 11 } } },
+    y: {
+      type: 'linear' as const,
+      display: hasBrix.value || (hasDens.value && !hasBrix.value),
+      position: 'left' as const,
+      title: { display: true, text: hasBrix.value ? 'Brix (°)' : 'Densidad', font: { family: 'Inter', size: 11 }, color: '#6B7280' },
+      grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { family: 'Inter', size: 11 } },
     },
-  })
-}
-
-// flush:'post' fires after Vue updates the DOM — canvas is guaranteed to exist
-watch(sortedLogs, (logs) => {
-  if (logs.length) renderChart(logs)
-}, { flush: 'post' })
-
-onUnmounted(() => chartInstance?.destroy())
+    y1: {
+      type: 'linear' as const,
+      display: hasTemp.value,
+      position: 'right' as const,
+      title: { display: true, text: 'Temperatura (°C)', font: { family: 'Inter', size: 11 }, color: '#6B7280' },
+      grid: { drawOnChartArea: false }, ticks: { font: { family: 'Inter', size: 11 } },
+    },
+  },
+}))
 
 // ---- error message ----
 const errorMessage = computed(() => {
@@ -361,7 +358,9 @@ const hasNoSlug = computed(() => !useSubdomainSlug())
 
             <template v-else>
               <div class="chart-wrapper">
-                <canvas ref="chartRef"></canvas>
+                <ClientOnly>
+                  <Line :data="chartData" :options="chartOptions" />
+                </ClientOnly>
               </div>
               <div class="table-wrapper">
                 <table class="log-table">
