@@ -164,17 +164,16 @@ const sortedLogs = computed(() =>
 // ---- chart ----
 const chartRef = ref<HTMLCanvasElement>()
 let chartInstance: ChartType | null = null
-let ChartClass: typeof ChartType | null = null
+const chartReady = shallowRef<typeof ChartType | null>(null)
 
 onMounted(async () => {
   const { Chart, registerables } = await import('chart.js')
   Chart.register(...registerables)
-  ChartClass = Chart
-  if (sortedLogs.value.length) renderChart(sortedLogs.value)
+  chartReady.value = Chart
 })
 
 function renderChart(logs: typeof sortedLogs.value) {
-  if (!ChartClass || !chartRef.value || !logs.length) return
+  if (!chartReady.value || !chartRef.value || !logs.length) return
   chartInstance?.destroy()
 
   const hasBrix = logs.some((l) => l.brix != null)
@@ -206,7 +205,7 @@ function renderChart(logs: typeof sortedLogs.value) {
     })
   }
 
-  chartInstance = new ChartClass(chartRef.value, {
+  chartInstance = new chartReady.value(chartRef.value, {
     type: 'line',
     data: { labels: logs.map((l) => formatDateShort(l.recorded_at)), datasets },
     options: {
@@ -234,8 +233,10 @@ function renderChart(logs: typeof sortedLogs.value) {
   })
 }
 
-watch(sortedLogs, (logs) => {
-  if (logs.length && ChartClass) nextTick(() => renderChart(logs))
+// Render when EITHER chart.js finishes loading OR data arrives — whichever is last
+watch([chartReady, sortedLogs], ([Chart, logs]) => {
+  if (!Chart || !(logs as typeof sortedLogs.value).length) return
+  nextTick(() => renderChart(logs as typeof sortedLogs.value))
 })
 
 onUnmounted(() => chartInstance?.destroy())
