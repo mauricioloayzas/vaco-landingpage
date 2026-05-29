@@ -4,6 +4,7 @@ frontend:
     build:
       commands:
         - aws s3 sync batches/ s3://profiles-hayayaku/batches/ --delete --cache-control "max-age=0,no-cache"
+        - aws s3 sync js/ s3://profiles-hayayaku/js/ --delete --cache-control "max-age=0,no-cache"
         - aws s3 sync assets/images/ s3://profiles-hayayaku/assets/images/ --delete --cache-control "max-age=86400"
   artifacts:
     baseDirectory: /
