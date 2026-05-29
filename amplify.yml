@@ -7,8 +7,8 @@ frontend:
     build:
       commands:
         - npm run generate
-        # - aws s3 sync .output/public/_nuxt/ s3://profiles-hayayaku/_nuxt/ --delete --cache-control "max-age=31536000,immutable"
-        # - aws s3 sync .output/public/ s3://profiles-hayayaku/ --delete --cache-control "max-age=0,no-cache" --exclude "_nuxt/*"
+        - aws s3 sync .output/public/_nuxt/ s3://profiles-hayayaku/_nuxt/ --delete --cache-control "max-age=31536000,immutable"
+        - aws s3 sync .output/public/ s3://profiles-hayayaku/ --delete --cache-control "max-age=0,no-cache" --exclude "_nuxt/*"
   artifacts:
     baseDirectory: .output/public
     files:
