@@ -1,14 +1,18 @@
 version: 1
 frontend:
   phases:
+    preBuild:
+      commands:
+        - npm ci
     build:
       commands:
-        - aws s3 sync batches/ s3://profiles-hayayaku/batches/ --delete --cache-control "max-age=0,no-cache"
-        - aws s3 sync js/ s3://profiles-hayayaku/js/ --delete --cache-control "max-age=0,no-cache"
-        - aws s3 sync assets/images/ s3://profiles-hayayaku/assets/images/ --delete --cache-control "max-age=86400"
+        - npm run generate
+        - aws s3 sync .output/public/_nuxt/ s3://profiles-hayayaku/_nuxt/ --delete --cache-control "max-age=31536000,immutable"
+        - aws s3 sync .output/public/ s3://profiles-hayayaku/ --delete --cache-control "max-age=0,no-cache" --exclude "_nuxt/*"
   artifacts:
-    baseDirectory: /
+    baseDirectory: .output/public
     files:
       - '**/*'
   cache:
-    paths: []
+    paths:
+      - node_modules/**/*

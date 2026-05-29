@@ -1,0 +1,448 @@
+/* Batch-page additional :root variables (additive, no conflicts with landing.css) */
+:root {
+  --blue-50:   #EFF6FF;
+  --blue-100:  #DBEAFE;
+  --blue-500:  #3B82F6;
+  --blue-700:  #1D4ED8;
+  --green-50:  #F0FDF4;
+  --green-100: #DCFCE7;
+  --green-500: #22C55E;
+  --green-700: #15803D;
+  --yellow-50: #FEFCE8;
+  --yellow-100:#FEF9C3;
+  --yellow-500:#EAB308;
+  --yellow-700:#A16207;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =============================================
+   All batch-page styles are scoped under
+   .batch-page to avoid conflicts with landing
+   ============================================= */
+
+.batch-page {
+  font-family: var(--font);
+  color: var(--gray-900);
+  background: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.batch-page main { flex: 1; }
+
+.batch-page .container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.batch-page .hidden { display: none !important; }
+
+/* ---- navbar ---- */
+.batch-page .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 24px;
+  height: 60px;
+}
+
+.batch-page .nav-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.batch-page .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--gray-900);
+  letter-spacing: -.01em;
+}
+
+.batch-page .brand img { width: 28px; height: 28px; }
+
+/* ---- buttons ---- */
+.batch-page .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius);
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.batch-page .btn-primary {
+  background: var(--amber-500);
+  color: var(--white);
+}
+
+.batch-page .btn-primary:hover {
+  background: var(--amber-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(245,158,11,.3);
+}
+
+.batch-page .btn-outline {
+  background: var(--white);
+  color: var(--gray-700);
+  border: 1.5px solid var(--gray-200);
+}
+
+.batch-page .btn-outline:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-300);
+}
+
+/* ---- state containers ---- */
+.batch-page .state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 24px;
+  text-align: center;
+  min-height: 60vh;
+}
+
+.batch-page .spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--amber-100);
+  border-top-color: var(--amber-500);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+.batch-page .state-container p { color: var(--gray-500); font-size: .95rem; }
+.batch-page .state-container h2 { font-size: 1.4rem; font-weight: 700; color: var(--gray-900); }
+.batch-page .error-icon { font-size: 3rem; }
+
+/* ---- batch header ---- */
+.batch-page .batch-header {
+  background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+  color: var(--white);
+  padding: 40px 0 36px;
+}
+
+.batch-page .batch-header-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.batch-page .batch-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.batch-page .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.batch-page .badge-mead          { background: rgba(245,158,11,.2); color: var(--amber-400); }
+.batch-page .badge-fruit-ferment { background: rgba(236,72,153,.2);  color: #F9A8D4; }
+.batch-page .badge-sugarcane     { background: rgba(34,197,94,.2);   color: #86EFAC; }
+.batch-page .badge-begin  { background: rgba(234,179,8,.2);  color: var(--yellow-100); }
+.batch-page .badge-active { background: rgba(59,130,246,.2); color: var(--blue-100);  }
+.batch-page .badge-done   { background: rgba(34,197,94,.2);  color: var(--green-100); }
+.batch-page .badge-failed { background: rgba(239,68,68,.2);  color: #FCA5A5; }
+
+.batch-page .batch-name {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.batch-page .batch-code {
+  font-size: .9rem;
+  color: var(--gray-400);
+  font-family: 'Courier New', monospace;
+  letter-spacing: .05em;
+}
+
+.batch-page .batch-date-block { text-align: right; flex-shrink: 0; }
+
+.batch-page .batch-date-label {
+  display: block;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gray-400);
+  margin-bottom: 4px;
+}
+
+.batch-page .batch-date-value {
+  font-size: .95rem;
+  color: var(--gray-300);
+  font-weight: 500;
+}
+
+/* ---- sections ---- */
+.batch-page .section { padding: 48px 0; }
+.batch-page .section-alt { background: var(--gray-50); }
+
+.batch-page .section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.batch-page .section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+
+/* ---- metrics ---- */
+.batch-page .metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.batch-page .metric-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.batch-page .metric-icon { font-size: 1.6rem; }
+
+.batch-page .metric-value {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1;
+}
+
+.batch-page .metric-label {
+  font-size: .78rem;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 500;
+}
+
+/* ---- recipe ---- */
+.batch-page .recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.batch-page .recipe-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.batch-page .recipe-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gray-400);
+  font-weight: 600;
+}
+
+.batch-page .recipe-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+/* ---- additives ---- */
+.batch-page .additives-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.batch-page .additive-pill {
+  background: var(--amber-50);
+  color: var(--amber-700);
+  border: 1px solid var(--amber-100);
+  border-radius: 99px;
+  padding: 3px 10px;
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+/* ---- logs ---- */
+.batch-page .logs-empty {
+  text-align: center;
+  color: var(--gray-400);
+  padding: 48px 24px;
+  font-size: .95rem;
+}
+
+.batch-page .chart-wrapper {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+  position: relative;
+  height: 320px;
+}
+
+.batch-page .table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.batch-page .log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .875rem;
+}
+
+.batch-page .log-table thead { background: var(--gray-50); }
+
+.batch-page .log-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--gray-500);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.batch-page .log-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-700);
+  font-variant-numeric: tabular-nums;
+}
+
+.batch-page .log-table tr:last-child td { border-bottom: none; }
+.batch-page .log-table tbody tr:hover { background: var(--gray-50); }
+.batch-page .log-table td.value { font-weight: 600; color: var(--gray-900); }
+
+/* ---- share banner ---- */
+.batch-page .share-banner {
+  background: var(--amber-50);
+  border-top: 1px solid var(--amber-100);
+  border-bottom: 1px solid var(--amber-100);
+  padding: 16px 0;
+}
+
+.batch-page .share-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.batch-page .share-text { font-size: .875rem; color: var(--amber-700); }
+.batch-page .share-text strong { font-weight: 700; }
+
+/* ---- footer ---- */
+.batch-page .footer {
+  background: var(--gray-900);
+  color: var(--gray-400);
+  padding: 32px 0;
+  margin-top: auto;
+}
+
+.batch-page .footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.batch-page .footer .brand { color: var(--white); font-size: .95rem; }
+.batch-page .footer .brand img { opacity: .8; }
+
+.batch-page .footer-tagline { font-size: .8rem; color: var(--gray-500); }
+
+.batch-page .footer-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.batch-page .footer-link {
+  font-size: .8rem;
+  color: var(--gray-500);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.batch-page .footer-link:hover { color: var(--white); }
+
+/* ---- responsive ---- */
+@media (max-width: 640px) {
+  .batch-page .batch-header-inner { flex-direction: column; }
+  .batch-page .batch-date-block { text-align: left; }
+  .batch-page .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .batch-page .recipe-grid { grid-template-columns: 1fr 1fr; }
+  .batch-page .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .batch-page .share-inner { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 400px) {
+  .batch-page .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .batch-page .recipe-grid { grid-template-columns: 1fr; }
+}
