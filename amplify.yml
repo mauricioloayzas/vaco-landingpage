@@ -7,6 +7,8 @@ frontend:
     build:
       commands:
         - npm run generate
+        - echo "--- Output dir ---" && ls -la .output/ || echo "No .output dir"
+        - echo "--- Find index.html ---" && find . -name "index.html" -not -path "*/node_modules/*" 2>/dev/null | head -10
         - aws s3 sync .output/public/ s3://profiles-hayayaku/ --delete --cache-control "max-age=0,no-cache"
   artifacts:
     baseDirectory: .output/public
