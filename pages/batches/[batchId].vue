@@ -4,7 +4,7 @@ import type { Chart as ChartType } from 'chart.js'
 const route = useRoute()
 const batchId = route.params.batchId as string
 
-const { batch, batchDetail, fermentationLogs, pending, error } = usePublicBatch(batchId)
+const { batch, batchDetail, fermentationLogs, profile, pending, error } = usePublicBatch(batchId)
 
 // ---- static metadata ----
 const TYPE_META: Record<string, { label: string; icon: string; cls: string }> = {
@@ -308,6 +308,7 @@ const hasNoSlug = computed(() => !useSubdomainSlug())
                     {{ statusInfo.label }}
                   </span>
                 </div>
+                <p v-if="profile" class="batch-profile-name">{{ profile.name }}</p>
                 <h1 class="batch-name">{{ batch.name }}</h1>
                 <p class="batch-code">{{ batch.code }}</p>
               </div>

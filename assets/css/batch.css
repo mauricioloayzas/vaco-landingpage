@@ -181,6 +181,15 @@
 .batch-page .badge-done   { background: rgba(34,197,94,.2);  color: var(--green-100); }
 .batch-page .badge-failed { background: rgba(239,68,68,.2);  color: #FCA5A5; }
 
+.batch-page .batch-profile-name {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--amber-400);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
 .batch-page .batch-name {
   font-size: clamp(1.5rem, 4vw, 2.2rem);
   font-weight: 800;
