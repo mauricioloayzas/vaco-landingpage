@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Chart as ChartType } from 'chart.js'
+import { Chart } from 'chart.js'
 
 const route = useRoute()
 const batchId = route.params.batchId as string
@@ -163,17 +163,10 @@ const sortedLogs = computed(() =>
 
 // ---- chart ----
 const chartRef = ref<HTMLCanvasElement>()
-let chartInstance: ChartType | null = null
-const chartReady = shallowRef<typeof ChartType | null>(null)
-
-onMounted(async () => {
-  const { Chart, registerables } = await import('chart.js')
-  Chart.register(...registerables)
-  chartReady.value = Chart
-})
+let chartInstance: Chart | null = null
 
 function renderChart(logs: typeof sortedLogs.value) {
-  if (!chartReady.value || !chartRef.value || !logs.length) return
+  if (!chartRef.value || !logs.length) return
   chartInstance?.destroy()
 
   const hasBrix = logs.some((l) => l.brix != null)
@@ -205,7 +198,7 @@ function renderChart(logs: typeof sortedLogs.value) {
     })
   }
 
-  chartInstance = new chartReady.value(chartRef.value, {
+  chartInstance = new Chart(chartRef.value, {
     type: 'line',
     data: { labels: logs.map((l) => formatDateShort(l.recorded_at)), datasets },
     options: {
@@ -233,11 +226,10 @@ function renderChart(logs: typeof sortedLogs.value) {
   })
 }
 
-// Render when EITHER chart.js finishes loading OR data arrives — whichever is last
-watch([chartReady, sortedLogs], ([Chart, logs]) => {
-  if (!Chart || !(logs as typeof sortedLogs.value).length) return
-  nextTick(() => renderChart(logs as typeof sortedLogs.value))
-})
+// flush:'post' fires after Vue updates the DOM — canvas is guaranteed to exist
+watch(sortedLogs, (logs) => {
+  if (logs.length) renderChart(logs)
+}, { flush: 'post' })
 
 onUnmounted(() => chartInstance?.destroy())
 
